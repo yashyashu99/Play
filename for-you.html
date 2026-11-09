@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For you</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;700&display=swap">
+<style>
+:root{--ink:#fff0f5;--soft:#ffc2d6;--rose:#ff4d85;--rose2:#ff7aa8;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:"Quicksand",system-ui,sans-serif;color:var(--ink);background:radial-gradient(120% 90% at 50% 0%,#7a1f4d 0%,#3d0f2e 55%,#1d0618 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:env(safe-area-inset-top,0px) 16px env(safe-area-inset-bottom,0px)}
+.bg{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.bg svg{position:absolute;bottom:-60px;opacity:0;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.5}100%{transform:translateY(-115vh) rotate(40deg);opacity:0}}
+.card{position:relative;width:100%;max-width:430px;padding:40px 26px 36px;text-align:center;border-radius:36px;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:1px solid rgba(255,194,214,.35);box-shadow:0 0 0 8px rgba(255,77,133,.07),0 30px 80px rgba(255,77,133,.28)}
+.heart{width:92px;height:92px;display:block;margin:0 auto;filter:drop-shadow(0 0 22px rgba(255,77,133,.85));animation:beat 1.3s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.14)}}
+h1{font-family:"Dancing Script","Brush Script MT",cursive;font-size:56px;line-height:1.05;margin:14px 0 4px;font-weight:700}
+.sub{font-size:22px;margin:0 0 30px;color:var(--soft);font-weight:500}
+.btns{display:flex;gap:18px;justify-content:center;align-items:center;min-height:64px}
+button{font:inherit;font-weight:700;font-size:20px;border:0;border-radius:999px;padding:15px 38px;cursor:pointer;color:#fff}
+#yes{background:linear-gradient(135deg,var(--rose),var(--rose2));box-shadow:0 10px 30px rgba(255,77,133,.55);transition:transform .2s}
+#no{background:#6a2149;border:1px solid rgba(255,194,214,.5);color:var(--soft);white-space:nowrap}
+#no.run{position:fixed;z-index:50;transition:left .2s ease,top .2s ease}
+.msg{display:none}
+.done .ask{display:none}
+.done .msg{display:block}
+.msg h2{font-family:"Dancing Script","Brush Script MT",cursive;font-size:46px;line-height:1.1;margin:16px 0 18px}
+.msg p{font-size:22px;line-height:1.6;margin:0 0 10px;color:var(--soft)}
+.msg .big{color:var(--ink);font-weight:700}
+.line{opacity:0;transform:translateY(10px);animation:in .9s ease forwards}
+.l2{animation-delay:.9s}.l3{animation-delay:1.8s}.l4{animation-delay:2.7s}
+@keyframes in{to{opacity:1;transform:none}}
+.pop{position:fixed;left:50%;top:50%;pointer-events:none;z-index:20}
+@media (prefers-reduced-motion:reduce){.heart,.bg svg{animation:none}.line{animation:none;opacity:1;transform:none}#no.run{transition:none}}
+</style>
+</head>
+<body>
+<div class="bg" id="bg" aria-hidden="true"></div>
+<main class="card" id="card">
+  <div class="ask">
+    <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7aa8"/><stop offset="1" stop-color="#ff1f6b"/></linearGradient></defs><path fill="url(#g)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <h1>I love you</h1>
+    <p class="sub">Do you love me?</p>
+    <div class="btns">
+      <button id="yes" type="button">Yes</button>
+      <button id="no" type="button">No</button>
+    </div>
+  </div>
+  <div class="msg" role="status">
+    <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path fill="url(#g)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <h2 class="line">My baby girl</h2>
+    <p class="line l2 big">I’m really sorry for last night.</p>
+    <p class="line l3">And I always love you, beta.</p>
+    <p class="line l4">Forever yours</p>
+  </div>
+</main>
+<script>
+(function(){
+  var bg=document.getElementById('bg'),no=document.getElementById('no'),yes=document.getElementById('yes'),card=document.getElementById('card');
+  var colors=['#ff4d85','#ff7aa8','#ffb3cf','#ff1f6b','#ffd6e5'];
+  function heart(size,color){
+    return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24"><path fill="'+color+'" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+  }
+  for(var i=0;i<20;i++){
+    var d=document.createElement('div');
+    d.innerHTML=heart(14+Math.random()*28,colors[i%colors.length]);
+    var s=d.firstChild;
+    s.style.left=(Math.random()*100)+'%';
+    s.style.animationDuration=(9+Math.random()*10)+'s';
+    s.style.animationDelay=(-Math.random()*18)+'s';
+    bg.appendChild(s);
+  }
+  var texts=['No','Are you sure?','Try again','Catch me','Say yes!','Nope'];
+  var n=0,scale=1;
+  function dodge(e){
+    if(e&&e.preventDefault)e.preventDefault();
+    if(no.parentNode!==document.body)document.body.appendChild(no);
+    n++;
+    no.textContent=texts[n%texts.length];
+    scale=Math.min(1.8,scale+0.08);
+    yes.style.transform='scale('+scale+')';
+    var w=window.innerWidth,h=window.innerHeight;
+    var bw=no.offsetWidth||110,bh=no.offsetHeight||54;
+    var x=Math.random()*(w-bw-24)+12,y=Math.random()*(h-bh-24)+12;
+    no.classList.add('run');
+    no.style.left=x+'px';no.style.top=y+'px';
+  }
+  no.addEventListener('mouseover',dodge);
+  no.addEventListener('touchstart',dodge,{passive:false});
+  no.addEventListener('click',dodge);
+  yes.addEventListener('click',function(){
+    no.style.display='none';
+    card.classList.add('done');
+    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    for(var i=0;i<60;i++){
+      var p=document.createElement('div');
+      p.className='pop';
+      p.innerHTML=heart(18+Math.random()*20,colors[i%colors.length]);
+      document.body.appendChild(p);
+      var a=Math.random()*Math.PI*2,dist=120+Math.random()*Math.max(window.innerWidth,500)*0.6;
+      p.animate([
+        {transform:'translate(-50%,-50%) scale(.4)',opacity:1},
+        {transform:'translate(calc(-50% + '+Math.cos(a)*dist+'px),calc(-50% + '+(Math.sin(a)*dist-80)+'px)) scale(1.4) rotate('+(Math.random()*360)+'deg)',opacity:0}
+      ],{duration:1600+Math.random()*1400,easing:'cubic-bezier(.15,.7,.3,1)',fill:'forwards'}).onfinish=(function(el){return function(){el.remove()}})(p);
+    }
+  });
+})();
+</script>
+</body>
+</html>
